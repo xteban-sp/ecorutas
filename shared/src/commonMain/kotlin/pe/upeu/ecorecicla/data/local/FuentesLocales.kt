@@ -37,8 +37,8 @@ class RutaLocal(base: EcoDb) {
             fila?.let { Ruta(it.id, it.fecha, it.estado == "CERRADA") }
         }
 
-    fun observarPuntos(busqueda: String): Flow<List<PuntoAcopio>> =
-        rutas.listarPuntos(busqueda).asFlow().mapToList(Dispatchers.Default).map { filas -> filas.map { it.aDominio() } }
+    fun observarPuntos(busqueda: String, soloPendientes: Boolean = false): Flow<List<PuntoAcopio>> =
+        rutas.listarPuntos(busqueda, if (soloPendientes) 1L else 0L).asFlow().mapToList(Dispatchers.Default).map { filas -> filas.map { it.aDominio() } }
 
     fun observarPunto(id: Long): Flow<PuntoAcopio?> =
         rutas.obtenerPunto(id).asFlow().mapToOneOrNull(Dispatchers.Default).map { it?.aDominio() }
@@ -162,7 +162,8 @@ class PesajeLocal(base: EcoDb) {
             anulado = if (anulado != null) 1 else 0,
             motivo_anulacion = anulado?.motivo,
             pendiente = if (p.pendiente) 1 else 0,
-            operacion = operacion
+            operacion = operacion,
+            humedad_estimada = p.humedadEstimada
         )
     }
 
@@ -178,6 +179,7 @@ class PesajeLocal(base: EcoDb) {
         estado = if (anulado == 1L) EstadoPesaje.Anulado(motivo_anulacion.orEmpty()) else EstadoPesaje.Registrado,
         pendiente = pendiente == 1L,
         rutaId = ruta_id,
-        observacion = observacion
+        observacion = observacion,
+        humedadEstimada = humedad_estimada
     )
 }

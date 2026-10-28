@@ -13,7 +13,9 @@ data class Pesaje(
     val pendiente: Boolean,
     // Propiedades agregadas (la seccion 4.5 lo permite)
     val rutaId: Long = 0,
-    val observacion: String = ""
+    val observacion: String = "",
+    /** SC-C: humedad estimada en %, opcional. */
+    val humedadEstimada: Double? = null
 ) {
     val anulado: Boolean get() = estado is EstadoPesaje.Anulado
 }
@@ -24,5 +26,6 @@ data class DatosPesaje(
     val material: String,
     val pesoBruto: Double?,
     val tara: Double?,
-    val observacion: String = ""
+    val observacion: String = "",
+    val humedadEstimada: Double? = null
 )

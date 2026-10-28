@@ -60,7 +60,8 @@ class PesajeRepositoryImpl(
             estado = EstadoPesaje.Registrado,
             pendiente = true,
             rutaId = ruta.id,
-            observacion = datos.observacion.trim()
+            observacion = datos.observacion.trim(),
+            humedadEstimada = datos.humedadEstimada
         )
         val enviado = ejecutarLlamada { api.registrarPesaje(nuevo.aPeticionRegistro()) }
         enviado.onSuccess { dto ->
@@ -79,7 +80,8 @@ class PesajeRepositoryImpl(
             pesoBruto = datos.pesoBruto ?: 0.0,
             tara = datos.tara ?: 0.0,
             pesoNeto = (datos.pesoBruto ?: 0.0) - (datos.tara ?: 0.0),
-            observacion = datos.observacion.trim()
+            observacion = datos.observacion.trim(),
+            humedadEstimada = datos.humedadEstimada
         )
         // Aun no existe en el servidor: se corrige la fila local y sigue pendiente de crear.
         if (id < 0) {

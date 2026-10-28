@@ -26,7 +26,8 @@ class RutaRepositoryImpl(
 ) : RutaRepository {
 
     override fun observarRuta(): Flow<Ruta?> = rutaLocal.observarRuta()
-    override fun observarPuntos(busqueda: String): Flow<List<PuntoAcopio>> = rutaLocal.observarPuntos(busqueda)
+    override fun observarPuntos(busqueda: String, soloPendientes: Boolean): Flow<List<PuntoAcopio>> =
+        rutaLocal.observarPuntos(busqueda, soloPendientes)
     override fun observarPunto(id: Long): Flow<PuntoAcopio?> = rutaLocal.observarPunto(id)
     override fun observarUltimaSincronizacion(): Flow<Long?> = rutaLocal.observarUltimaSincronizacion()
 

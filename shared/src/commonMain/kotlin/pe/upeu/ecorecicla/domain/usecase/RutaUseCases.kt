@@ -13,9 +13,13 @@ class ObservarRutaUseCase(private val rutas: RutaRepository) {
     operator fun invoke(): Flow<Ruta?> = rutas.observarRuta()
 }
 
-/** Puntos en orden de visita; la busqueda se resuelve en la consulta local. */
+/**
+ * Puntos en orden de visita. La busqueda y el filtro "solo pendientes de pesar" (SC-A)
+ * se resuelven en la consulta local: funcionan igual sin conexion.
+ */
 class ObservarPuntosUseCase(private val rutas: RutaRepository) {
-    operator fun invoke(busqueda: String): Flow<List<PuntoAcopio>> = rutas.observarPuntos(busqueda.trim())
+    operator fun invoke(busqueda: String, soloPendientes: Boolean = false): Flow<List<PuntoAcopio>> =
+        rutas.observarPuntos(busqueda.trim(), soloPendientes)
 }
 
 class ObservarPuntoUseCase(private val rutas: RutaRepository) {
