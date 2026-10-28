@@ -61,6 +61,7 @@ data class PesajeDto(
     val tara: Double,
     val pesoNeto: Double,
     val observacion: String = "",
+    val humedadEstimada: Double? = null,
     @SerialName("operario") val operarioUsuario: String,
     val anulado: Boolean = false,
     val motivoAnulacion: String? = null
@@ -74,7 +75,8 @@ data class PesajeRequestDto(
     val material: String,
     val pesoBruto: Double,
     val tara: Double,
-    val observacion: String
+    val observacion: String,
+    val humedadEstimada: Double? = null
 )
 
 @Serializable
@@ -82,7 +84,8 @@ data class CorreccionRequestDto(
     val material: String,
     val pesoBruto: Double,
     val tara: Double,
-    val observacion: String
+    val observacion: String,
+    val humedadEstimada: Double? = null
 )
 
 /** Envoltorio de paginacion comun a todos los listados (seccion 4.2). */

@@ -49,7 +49,8 @@ fun PesajeDto.aDominio() = Pesaje(
     estado = if (anulado) EstadoPesaje.Anulado(motivoAnulacion.orEmpty()) else EstadoPesaje.Registrado,
     pendiente = false,
     rutaId = rutaId,
-    observacion = observacion
+    observacion = observacion,
+    humedadEstimada = humedadEstimada
 )
 
 fun Pesaje.aPeticionRegistro() = PesajeRequestDto(
@@ -58,19 +59,22 @@ fun Pesaje.aPeticionRegistro() = PesajeRequestDto(
     material = material,
     pesoBruto = pesoBruto,
     tara = tara,
-    observacion = observacion
+    observacion = observacion,
+    humedadEstimada = humedadEstimada
 )
 
 fun Pesaje.aPeticionCorreccion() = CorreccionRequestDto(
     material = material,
     pesoBruto = pesoBruto,
     tara = tara,
-    observacion = observacion
+    observacion = observacion,
+    humedadEstimada = humedadEstimada
 )
 
 fun DatosPesaje.aPeticionCorreccion() = CorreccionRequestDto(
     material = material.trim().uppercase(),
     pesoBruto = pesoBruto ?: 0.0,
     tara = tara ?: 0.0,
-    observacion = observacion.trim()
+    observacion = observacion.trim(),
+    humedadEstimada = humedadEstimada
 )
