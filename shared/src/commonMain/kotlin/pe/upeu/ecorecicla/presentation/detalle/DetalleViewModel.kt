@@ -31,6 +31,8 @@ data class FormularioPesaje(
     val pesoBruto: String = "",
     val tara: String = "",
     val observacion: String = "",
+    /** SC-C: humedad estimada en %, opcional. */
+    val humedad: String = "",
     val errores: Map<String, String> = emptyMap(),
     val guardando: Boolean = false
 )
@@ -89,7 +91,12 @@ class DetalleViewModel(
     }
 
     fun abrirCorreccion(p: Pesaje) = _estado.update {
-        it.copy(formulario = FormularioPesaje(p.id, p.material, kg(p.pesoBruto), kg(p.tara), p.observacion))
+        it.copy(
+            formulario = FormularioPesaje(
+                p.id, p.material, kg(p.pesoBruto), kg(p.tara), p.observacion,
+                humedad = p.humedadEstimada?.let(::kg).orEmpty()
+            )
+        )
     }
 
     fun cerrarFormulario() = _estado.update { it.copy(formulario = null) }
@@ -107,7 +114,8 @@ class DetalleViewModel(
             material = form.material,
             pesoBruto = form.pesoBruto.replace(',', '.').toDoubleOrNull(),
             tara = form.tara.replace(',', '.').toDoubleOrNull(),
-            observacion = form.observacion
+            observacion = form.observacion,
+            humedadEstimada = form.humedad.replace(',', '.').toDoubleOrNull()
         )
         viewModelScope.launch {
             val resultado = if (form.idEditando == null) registrarPesaje(datos) else corregirPesaje(form.idEditando, datos)

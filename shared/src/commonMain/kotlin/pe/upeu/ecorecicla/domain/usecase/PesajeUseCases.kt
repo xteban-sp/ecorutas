@@ -24,6 +24,10 @@ fun validarPesaje(datos: DatosPesaje): Map<String, String> = buildMap {
         tara < 0 -> put("tara", "La tara no puede ser negativa")
         bruto != null && bruto > 0 && bruto - tara <= 0 -> put("tara", "La tara debe ser menor que el peso bruto")
     }
+    // SC-C: opcional, pero si se indica debe ser un porcentaje valido
+    datos.humedadEstimada?.let { h ->
+        if (h < 0 || h > 100) put("humedadEstimada", "La humedad debe estar entre 0 y 100 %")
+    }
 }
 
 class RegistrarPesajeUseCase(private val pesajes: PesajeRepository) {

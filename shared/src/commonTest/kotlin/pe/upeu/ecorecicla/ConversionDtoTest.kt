@@ -7,7 +7,9 @@ import pe.upeu.ecorecicla.data.remote.dto.RutaDto
 import pe.upeu.ecorecicla.data.remote.dto.aDominio
 import pe.upeu.ecorecicla.data.remote.dto.aPeticionRegistro
 import pe.upeu.ecorecicla.data.remote.jsonEco
+import pe.upeu.ecorecicla.domain.model.DatosPesaje
 import pe.upeu.ecorecicla.domain.model.EstadoPesaje
+import pe.upeu.ecorecicla.domain.usecase.validarPesaje
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -56,5 +58,21 @@ class ConversionDtoTest {
 
         assertFalse("pesoNeto" in json, "El cliente nunca envia el neto (RN-03): $json")
         assertTrue("\"tara\":2.0" in json)
+    }
+
+    /** SC-C: la humedad recorre JSON -> DTO -> dominio -> peticion, y se valida sin red. */
+    @Test
+    fun laHumedadEstimadaViajaEnElContratoYSeValidaLocalmente() {
+        val json = pesajeJson(5).replace("\"observacion\":\"\"", "\"observacion\":\"\",\"humedadEstimada\":12.5")
+        val pesaje = jsonEco.decodeFromString<PesajeDto>(json).aDominio()
+        assertEquals(12.5, pesaje.humedadEstimada)
+        assertTrue("\"humedadEstimada\":12.5" in jsonEco.encodeToString(pesaje.aPeticionRegistro()))
+
+        // Un pesaje anterior al cambio (sin la clave) sigue convirtiendose
+        assertEquals(null, jsonEco.decodeFromString<PesajeDto>(pesajeJson(6)).aDominio().humedadEstimada)
+
+        val datos = DatosPesaje(puntoId = 4, material = "CARTON", pesoBruto = 10.0, tara = 1.0, humedadEstimada = 130.0)
+        assertEquals("La humedad debe estar entre 0 y 100 %", validarPesaje(datos)["humedadEstimada"])
+        assertTrue(validarPesaje(datos.copy(humedadEstimada = 15.0)).isEmpty())
     }
 }

@@ -154,7 +154,8 @@ private fun TarjetaPesaje(
                 }
             }
             Text(
-                "Bruto ${kg(pesaje.pesoBruto)} kg · Tara ${kg(pesaje.tara)} kg",
+                "Bruto ${kg(pesaje.pesoBruto)} kg · Tara ${kg(pesaje.tara)} kg" +
+                    (pesaje.humedadEstimada?.let { " · Humedad ${kg(it)} %" } ?: ""),
                 style = MaterialTheme.typography.bodySmall
             )
             Text(
@@ -196,6 +197,10 @@ private fun FormularioPesajeDialogo(form: FormularioPesaje, viewModel: DetalleVi
                 }
                 CampoTexto("Tara del contenedor (kg)", form.tara, form.errores["tara"], form.guardando, numerico = true) {
                     viewModel.editarFormulario { copy(tara = it) }
+                }
+                // SC-C: el mensaje del servidor (400 en humedadEstimada) aparece bajo este campo
+                CampoTexto("Humedad estimada (%)", form.humedad, form.errores["humedadEstimada"], form.guardando, numerico = true) {
+                    viewModel.editarFormulario { copy(humedad = it) }
                 }
                 CampoTexto("Observacion", form.observacion, form.errores["observacion"], form.guardando) {
                     viewModel.editarFormulario { copy(observacion = it) }
