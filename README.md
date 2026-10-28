@@ -61,6 +61,21 @@ Los listados se deserializan como `PaginaDto<T>` (envoltorio común), y los erro
 
 La sesión trae los privilegios del token (`Sesion.puede(...)`). La interfaz solo **ofrece** lo permitido: "Registrar pesaje" (PESAJE_CREAR), "Corregir" (PESAJE_EDITAR, y si no tiene PESAJE_EDITAR_TODOS solo en pesajes propios), "Anular" (PESAJE_ANULAR), "Cerrar ruta" (RUTA_CERRAR). Esto es experiencia de usuario: la seguridad la aplica el servicio, que responde 403 aunque se intente igual.
 
+## Parte II: solicitudes de cambio
+
+Cada solicitud se desarrolló en su rama `sc-<letra>-istana` creada desde `develop`, con al menos tres commits, y se incorporó por solicitud de incorporación (PR).
+
+| Código | Cambio | Dónde vive la lógica | Prueba |
+|---|---|---|---|
+| SC-A | Filtro «Solo pendientes de pesar» combinado con el buscador, también sin conexión | Consulta `listarPuntos` de `Ruta.sq` (parámetro `:soloPendientes`) → `ObservarPuntosUseCase` → `RutaViewModel`. El composable solo muestra el chip. | `FiltroPendientesTest` |
+| SC-B | Rol AUDITOR | Base de datos del servicio (`rol_privilegio`). Sin cambios en la app. | Evidencia de 403 en el servicio |
+| SC-C | Humedad estimada (%) del pesaje | Servicio (V4, DTO, validación 0–100) → `PesajeDto`/`PesajeRequestDto` → `Pesaje.humedadEstimada` → columna `humedad_estimada` con migración `1.sqm` (base v2) → formulario y tarjeta del detalle | `ConversionDtoTest.laHumedadEstimada…` |
+| SC-D | Distintivo con los pesajes pendientes de sincronizar | Consulta observable `contarPendientes` (`COUNT(*) WHERE pendiente = 1`) → `ObservarPendientesUseCase` → `RutaViewModel`. No hay contador manual: cambia solo al registrar o sincronizar. | `OfflineTest.distintivoDePendientes…` |
+
+## SC-B: rol AUDITOR en la aplicación
+
+El rol AUDITOR (solo PUNTO_LEER y PESAJE_LEER) se agregó en el servicio con la migración `V3__rol_auditor.sql` del repositorio `ecoapi`. **La aplicación no necesitó cambios de código**: ninguna pantalla pregunta por el nombre del rol, todas consultan `Sesion.puede(privilegio)` con los privilegios del token. Un auditor que inicia sesión ve el perfil con sus 2 privilegios y no recibe ninguna acción de escritura (Registrar, Corregir, Anular, Cerrar ruta); si las intentara, el servicio responde 403.
+
 ## Decisiones de arquitectura
 
 - **Capas**: domain (modelo, contratos, casos de uso, sin anotaciones de serialización), data (Ktor, DTO, SQLDelight, repositorios), presentation (ViewModel + `StateFlow<UiState>` + Compose). Inyección con Koin.
@@ -77,6 +92,7 @@ La sesión trae los privilegios del token (`Sesion.puede(...)`). La interfaz sol
 |---|---|
 | `ConversionDtoTest` | DTO → dominio, `@SerialName`, claves desconocidas, envoltorio paginado, el neto nunca se envía |
 | `MapeoErroresTest` | 400 con campos, 401 borra token y avisa (y la cabecera se agregó centralmente), 403 conserva la sesión, 404/409/500/sin red |
-| `OfflineTest` | Registro sin conexión → pendiente con id -1, -2; sincronización en orden POST → GET y sin duplicados |
+| `OfflineTest` | Registro sin conexión → pendiente con id -1, -2; sincronización en orden POST → GET y sin duplicados; distintivo de pendientes (SC-D) |
+| `FiltroPendientesTest` | Filtro de pendientes combinado con la búsqueda en la consulta local (SC-A) |
 
 Se sustituye la red con `MockEngine` (ktor-client-mock) y la base con `JdbcSqliteDriver.IN_MEMORY` (`androidHostTest`).
