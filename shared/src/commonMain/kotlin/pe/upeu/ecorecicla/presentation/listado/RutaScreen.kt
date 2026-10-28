@@ -25,6 +25,8 @@ import androidx.compose.material.icons.filled.Sync
 import androidx.compose.material.icons.outlined.Map
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -93,7 +95,19 @@ fun RutaScreen(
                 },
                 actions = {
                     IconButton(onClick = viewModel::sincronizar, enabled = !estado.sincronizando) {
-                        Icon(Icons.Default.Sync, contentDescription = "Sincronizar")
+                        // SC-D: distintivo con los pesajes pendientes de sincronizar
+                        BadgedBox(
+                            badge = {
+                                if (estado.pendientesPorSincronizar > 0) {
+                                    Badge { Text("${estado.pendientesPorSincronizar}") }
+                                }
+                            }
+                        ) {
+                            Icon(
+                                Icons.Default.Sync,
+                                contentDescription = "Sincronizar (${estado.pendientesPorSincronizar} pendientes)"
+                            )
+                        }
                     }
                     IconButton(onClick = alAbrirPerfil) { Icon(Icons.Default.Person, contentDescription = "Perfil") }
                 }
