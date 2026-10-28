@@ -1,7 +1,21 @@
 ### ecoapi — git log --graph --oneline --all
-*   2ee12d7 (HEAD -> main, origin/main) Merge develop en main: Release: producto con la Parte II
+*   ea8505d (HEAD -> main, origin/main) Merge develop en main: servicio sobre PostgreSQL
 |\  
-| *   ae0d332 (origin/develop, develop) Merge docs/parte-ii en develop: Documentar la Parte II en el README
+| *   5061b5b (origin/develop, develop) Merge feature/postgresql en develop: base de datos PostgreSQL
+| |\  
+| | * 3cb9c86 (origin/feature/postgresql, feature/postgresql) docs(datos): documentar la ejecucion con PostgreSQL y Docker Compose
+| | * 988c4c2 feat(datos): adaptar la semilla a la aritmetica de fechas de PostgreSQL
+| | * 4b59d7f build(datos): reemplazar H2 por PostgreSQL levantado con Docker Compose
+| |/  
+* | 594f5d7 Merge develop en main: evidencias del examen
+|\| 
+| *   85c7ce1 Merge docs/evidencias en develop: evidencias del examen
+| |\  
+| | * 61d5ea1 (origin/docs/evidencias, docs/evidencias) docs: agregar el documento de evidencias, capturas y resultado de las pruebas
+| |/  
+* | 2ee12d7 Merge develop en main: Release: producto con la Parte II
+|\| 
+| *   ae0d332 Merge docs/parte-ii en develop: Documentar la Parte II en el README
 | |\  
 | | * 493f3ed (origin/docs/parte-ii, docs/parte-ii) docs: describir las solicitudes de cambio de la Parte II en el servicio
 | * | 16f0132 Merge sc-c-istana en develop: SC-C: humedad estimada del pesaje
@@ -47,6 +61,14 @@
 * 92af2ca chore: iniciar repositorio de EcoAPI
 
 ### git log --date=short --pretty="%h %ad %s"
+ea8505d 2026-10-28 Merge develop en main: servicio sobre PostgreSQL
+5061b5b 2026-10-28 Merge feature/postgresql en develop: base de datos PostgreSQL
+3cb9c86 2026-10-28 docs(datos): documentar la ejecucion con PostgreSQL y Docker Compose
+988c4c2 2026-10-28 feat(datos): adaptar la semilla a la aritmetica de fechas de PostgreSQL
+4b59d7f 2026-10-28 build(datos): reemplazar H2 por PostgreSQL levantado con Docker Compose
+594f5d7 2026-10-28 Merge develop en main: evidencias del examen
+85c7ce1 2026-10-28 Merge docs/evidencias en develop: evidencias del examen
+61d5ea1 2026-10-28 docs: agregar el documento de evidencias, capturas y resultado de las pruebas
 2ee12d7 2026-10-28 Merge develop en main: Release: producto con la Parte II
 ae0d332 2026-10-28 Merge docs/parte-ii en develop: Documentar la Parte II en el README
 16f0132 2026-10-28 Merge sc-c-istana en develop: SC-C: humedad estimada del pesaje
@@ -81,6 +103,10 @@ e50821c 2026-10-28 feat(datos): crear esquema relacional de rutas, puntos y pesa
 8db30a2 2026-10-28 build: configurar Spring Boot 4 con Kotlin, JPA, Flyway y H2
 
 ### Solicitudes de incorporacion (PR) cerradas en GitHub
+#14  develop -> main  2026-10-28T21:48  Release: servicio sobre PostgreSQL
+#13  feature/postgresql -> develop  2026-10-28T21:48  Migrar la base de datos a PostgreSQL
+#12  develop -> main  2026-10-28T21:25  Release: evidencias del examen
+#11  docs/evidencias -> develop  2026-10-28T21:25  Agregar las evidencias del examen
 #10  develop -> main  2026-10-28T21:12  Release: producto con la Parte II
 #9  docs/parte-ii -> develop  2026-10-28T21:12  Documentar la Parte II en el README
 #8  sc-c-istana -> develop  2026-10-28T21:11  SC-C: humedad estimada del pesaje

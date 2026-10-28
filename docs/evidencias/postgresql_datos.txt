@@ -1,0 +1,48 @@
+Datos en PostgreSQL (docker exec ecorecicla-postgres psql)
+
+                                         version                                          
+------------------------------------------------------------------------------------------
+ PostgreSQL 16.14 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+(1 row)
+
+ installed_rank | version |   description    | success 
+----------------+---------+------------------+---------
+              1 | 1       | esquema          | t
+              2 | 2       | datos semilla    | t
+              3 | 3       | rol auditor      | t
+              4 | 4       | humedad estimada | t
+(4 rows)
+
+    tabla    | count 
+-------------+-------
+ usuarios    |     5
+ roles       |     4
+ privilegios |     8
+ puntos      |    12
+ rutas       |     2
+ pesajes     |    16
+(6 rows)
+
+      rol      |                                              privilegios                                              
+---------------+-------------------------------------------------------------------------------------------------------
+ ADMINISTRADOR | PESAJE_LEER, PUNTO_GESTIONAR, PUNTO_LEER
+ AUDITOR       | PESAJE_LEER, PUNTO_LEER
+ OPERARIO      | PESAJE_CREAR, PESAJE_EDITAR, PESAJE_LEER, PUNTO_LEER
+ SUPERVISOR    | PESAJE_ANULAR, PESAJE_CREAR, PESAJE_EDITAR, PESAJE_EDITAR_TODOS, PESAJE_LEER, PUNTO_LEER, RUTA_CERRAR
+(4 rows)
+
+ id |   fecha    | estado  
+----+------------+---------
+  1 | 2026-10-27 | CERRADA
+  2 | 2026-10-28 | ABIERTA
+(2 rows)
+
+  username   |       hash_bcrypt       
+-------------+-------------------------
+ operario1   | $2a$10$FI2d0OMfSnnfp...
+ supervisor1 | $2a$10$FI2d0OMfSnnfp...
+ admin       | $2a$10$FI2d0OMfSnnfp...
+ operario2   | $2a$10$FI2d0OMfSnnfp...
+ auditor1    | $2a$10$FI2d0OMfSnnfp...
+(5 rows)
+
