@@ -44,8 +44,8 @@ SELECT p.id, p.razon_social, p.direccion, p.zona, p.material_habitual, p.secuenc
 FROM punto_acopio p
 WHERE p.razon_social LIKE ('%' || :busqueda || '%')
   AND (:soloPendientes = 0
-       OR NOT (p.atendido = 1
-               OR EXISTS (SELECT 1 FROM pesaje s WHERE s.punto_id = p.id AND s.anulado = 0)))
+       OR (p.atendido = 0
+           AND NOT EXISTS (SELECT 1 FROM pesaje s WHERE s.punto_id = p.id AND s.anulado = 0)))
 ORDER BY p.secuencia;
 
 obtenerPunto:
