@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
@@ -28,6 +29,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -134,10 +136,22 @@ fun RutaScreen(
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
             )
+            // SC-A: el chip solo cambia el estado; el filtrado lo hace la consulta SQL.
+            FilterChip(
+                selected = estado.soloPendientes,
+                onClick = { viewModel.cambiarSoloPendientes(!estado.soloPendientes) },
+                label = { Text("Solo pendientes de pesar") },
+                leadingIcon = if (estado.soloPendientes) {
+                    { Icon(Icons.Default.Check, null, Modifier.size(18.dp)) }
+                } else null,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
 
             when {
                 estado.cargando -> IndicadorCarga()
-                estado.puntos.isEmpty() && estado.busqueda.isNotBlank() ->
+                estado.puntos.isEmpty() && estado.soloPendientes && estado.busqueda.isBlank() ->
+                    EstadoVacio(Icons.Default.CheckCircle, "Todo pesado", "No quedan puntos pendientes de pesar en la ruta.")
+                estado.puntos.isEmpty() && (estado.busqueda.isNotBlank() || estado.soloPendientes) ->
                     EstadoVacio(Icons.Default.Search, "Sin coincidencias", "Ningun punto coincide con \"${estado.busqueda}\".")
                 estado.puntos.isEmpty() ->
                     EstadoVacio(
