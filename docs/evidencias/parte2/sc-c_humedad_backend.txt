@@ -1,0 +1,25 @@
+SC-C: humedad estimada - verificacion contra el servicio
+
+### Semilla actualizada: GET /puntos/1/pesajes (humedadEstimada en cada pesaje)
+{"contenido":[{"id":11,"rutaId":2,"puntoId":1,"fechaHora":"2026-10-28T07:05","material":"PLASTICO","pesoBruto":18.0,"tara":2.0,"pesoNeto":16.0,"observacion":"Film de embalaje","humedadEstimada":2.0,"operario":"operario1","anulado":false,"motivoAnulacion":null},{"id":10,"rutaId":2,"puntoId":1,"fechaHora":"2026-10-28T07:00","material":"CARTON","pesoBruto":150.0,"tara":10.0,"pesoNeto":140.0,"observacion":"","humedadEstimada":12.5,"operario":"operario1","anulado":false,"motivoAnulacion":null}],"pagina":0,"tamanio":20,"totalElementos":2,"totalPaginas":1,"ultima":true}
+
+### Registrar con humedad 14.5 -> 201
+{"id":16,"rutaId":2,"puntoId":4,"fechaHora":"2026-10-28T15:53:38","material":"CARTON","pesoBruto":50.0,"tara":3.0,"pesoNeto":47.0,"observacion":"","humedadEstimada":14.5,"operario":"operario1","anulado":false,"motivoAnulacion":null}
+-> HTTP 201
+
+### Humedad 130 (fuera de rango) -> 400 con detalle en el campo
+{"timestamp":"2026-10-28T15:53:38","status":400,"error":"Bad Request","message":"Datos invalidos","path":"/api/v1/pesajes","validationErrors":{"humedadEstimada":"La humedad no puede superar el 100 %"}}
+-> HTTP 400
+
+### Corregir humedad del pesaje 10 -> 200
+{"id":10,"rutaId":2,"puntoId":1,"fechaHora":"2026-10-28T07:00","material":"CARTON","pesoBruto":150.0,"tara":10.0,"pesoNeto":140.0,"observacion":"","humedadEstimada":18.0,"operario":"operario1","anulado":false,"motivoAnulacion":null}
+-> HTTP 200
+
+### Archivos modificados en el backend:
+ EcoAPI.postman_collection.json                     | 67 ++++++++++++++++++++++
+ README.md                                          |  6 +-
+ .../kotlin/pe/upeu/ecorecicla/dominio/Entidades.kt |  3 +
+ .../pe/upeu/ecorecicla/servicio/PesajeService.kt   |  4 ++
+ src/main/kotlin/pe/upeu/ecorecicla/web/dto/Dtos.kt | 16 +++++-
+ .../db/migration/V4__humedad_estimada.sql          | 12 ++++
+ 6 files changed, 105 insertions(+), 3 deletions(-)

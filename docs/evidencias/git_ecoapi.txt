@@ -1,0 +1,98 @@
+### ecoapi — git log --graph --oneline --all
+*   2ee12d7 (HEAD -> main, origin/main) Merge develop en main: Release: producto con la Parte II
+|\  
+| *   ae0d332 (origin/develop, develop) Merge docs/parte-ii en develop: Documentar la Parte II en el README
+| |\  
+| | * 493f3ed (origin/docs/parte-ii, docs/parte-ii) docs: describir las solicitudes de cambio de la Parte II en el servicio
+| * | 16f0132 Merge sc-c-istana en develop: SC-C: humedad estimada del pesaje
+| |\| 
+| | * 718569f (origin/sc-c-istana, sc-c-istana) feat(datos): actualizar la semilla con humedad y documentar el contrato
+| | * 637810f feat(pesajes): completar la humedad estimada en peticiones, respuesta y servicio
+| | * 219ea55 feat(pesajes): recibir y devolver la humedad estimada validada entre 0 y 100
+| | * 4ddd86f feat(datos): agregar la columna humedad estimada al pesaje
+| * | a78d6b0 Merge sc-b-istana en develop: SC-B: rol AUDITOR de solo lectura
+| |\| 
+| | * add24e8 (origin/sc-b-istana, sc-b-istana) docs(seguridad): agregar la columna AUDITOR a la matriz de privilegios
+| | * 2de9b76 docs(seguridad): documentar el rol AUDITOR y sus pruebas en la coleccion
+| | * 2af45fb feat(datos): crear el usuario de prueba auditor1
+| | * df562d2 feat(seguridad): agregar el rol AUDITOR con privilegios de solo lectura
+| |/  
+* | 74d9903 (tag: v1.0-unidad2) Merge develop en main: producto de la unidad 2
+|\| 
+| *   c2dbfad Merge docs/contrato-api en develop: README y coleccion de peticiones
+| |\  
+| | * 997f6b4 (origin/docs/contrato-api, docs/contrato-api) docs: describir el contrato del API, los roles y la ejecucion
+| |/  
+| *   ec6f9e6 Merge feature/crud-pesajes en develop: CRUD de pesajes y reglas de negocio
+| |\  
+| | * 1219b4a (origin/feature/crud-pesajes, feature/crud-pesajes) feat(web): exponer los controladores REST bajo /api/v1
+| | * c935d46 feat(pesajes): registrar, corregir y anular aplicando RN-01 a RN-03
+| | * c9e7b9e feat(rutas): devolver la ruta del dia y cerrarla aplicando RN-04
+| |/  
+| *   6d95fdd Merge feature/seguridad-jwt en develop: autenticacion JWT y privilegios
+| |\  
+| | * a3079ca (origin/feature/seguridad-jwt, feature/seguridad-jwt) feat(auth): iniciar sesion y consultar el usuario actual
+| | * 35354de feat(seguridad): exigir privilegio por ruta y responder 401 y 403
+| | * 251b821 feat(errores): responder con el formato de error comun y la paginacion
+| | * 3e73ada feat(seguridad): firmar y verificar el token JWT con vigencia de una hora
+| | * 6ac2b36 feat(seguridad): modelar usuario, rol y privilegios desde la base
+| |/  
+| * b177132 Merge feature/esquema-datos en develop: esquema y semilla
+|/| 
+| * 4d3f4d2 (origin/feature/esquema-datos, feature/esquema-datos) feat(dominio): mapear entidades y repositorios JPA
+| * 2077196 feat(datos): cargar usuarios, roles, privilegios y datos semilla del anexo
+| * e50821c feat(datos): crear esquema relacional de rutas, puntos y pesajes
+| * 8db30a2 build: configurar Spring Boot 4 con Kotlin, JPA, Flyway y H2
+|/  
+* 92af2ca chore: iniciar repositorio de EcoAPI
+
+### git log --date=short --pretty="%h %ad %s"
+2ee12d7 2026-10-28 Merge develop en main: Release: producto con la Parte II
+ae0d332 2026-10-28 Merge docs/parte-ii en develop: Documentar la Parte II en el README
+16f0132 2026-10-28 Merge sc-c-istana en develop: SC-C: humedad estimada del pesaje
+a78d6b0 2026-10-28 Merge sc-b-istana en develop: SC-B: rol AUDITOR de solo lectura
+493f3ed 2026-10-28 docs: describir las solicitudes de cambio de la Parte II en el servicio
+718569f 2026-10-28 feat(datos): actualizar la semilla con humedad y documentar el contrato
+637810f 2026-10-28 feat(pesajes): completar la humedad estimada en peticiones, respuesta y servicio
+219ea55 2026-10-28 feat(pesajes): recibir y devolver la humedad estimada validada entre 0 y 100
+4ddd86f 2026-10-28 feat(datos): agregar la columna humedad estimada al pesaje
+add24e8 2026-10-28 docs(seguridad): agregar la columna AUDITOR a la matriz de privilegios
+2de9b76 2026-10-28 docs(seguridad): documentar el rol AUDITOR y sus pruebas en la coleccion
+2af45fb 2026-10-28 feat(datos): crear el usuario de prueba auditor1
+df562d2 2026-10-28 feat(seguridad): agregar el rol AUDITOR con privilegios de solo lectura
+74d9903 2026-10-28 Merge develop en main: producto de la unidad 2
+c2dbfad 2026-10-28 Merge docs/contrato-api en develop: README y coleccion de peticiones
+ec6f9e6 2026-10-28 Merge feature/crud-pesajes en develop: CRUD de pesajes y reglas de negocio
+997f6b4 2026-10-28 docs: describir el contrato del API, los roles y la ejecucion
+6d95fdd 2026-10-28 Merge feature/seguridad-jwt en develop: autenticacion JWT y privilegios
+1219b4a 2026-10-28 feat(web): exponer los controladores REST bajo /api/v1
+a3079ca 2026-10-28 feat(auth): iniciar sesion y consultar el usuario actual
+c935d46 2026-10-28 feat(pesajes): registrar, corregir y anular aplicando RN-01 a RN-03
+35354de 2026-10-28 feat(seguridad): exigir privilegio por ruta y responder 401 y 403
+c9e7b9e 2026-10-28 feat(rutas): devolver la ruta del dia y cerrarla aplicando RN-04
+251b821 2026-10-28 feat(errores): responder con el formato de error comun y la paginacion
+3e73ada 2026-10-28 feat(seguridad): firmar y verificar el token JWT con vigencia de una hora
+6ac2b36 2026-10-28 feat(seguridad): modelar usuario, rol y privilegios desde la base
+92af2ca 2026-10-28 chore: iniciar repositorio de EcoAPI
+b177132 2026-10-28 Merge feature/esquema-datos en develop: esquema y semilla
+4d3f4d2 2026-10-28 feat(dominio): mapear entidades y repositorios JPA
+2077196 2026-10-28 feat(datos): cargar usuarios, roles, privilegios y datos semilla del anexo
+e50821c 2026-10-28 feat(datos): crear esquema relacional de rutas, puntos y pesajes
+8db30a2 2026-10-28 build: configurar Spring Boot 4 con Kotlin, JPA, Flyway y H2
+
+### Solicitudes de incorporacion (PR) cerradas en GitHub
+#10  develop -> main  2026-10-28T21:12  Release: producto con la Parte II
+#9  docs/parte-ii -> develop  2026-10-28T21:12  Documentar la Parte II en el README
+#8  sc-c-istana -> develop  2026-10-28T21:11  SC-C: humedad estimada del pesaje
+#7  sc-b-istana -> develop  2026-10-28T21:11  SC-B: rol AUDITOR de solo lectura
+
+### Issues
+#6 CLOSED  SC-C: humedad estimada del pesaje
+#5 CLOSED  SC-B: rol AUDITOR de solo lectura
+#4 CLOSED  Documentacion: contrato del API y coleccion de peticiones
+#3 CLOSED  Persistencia: esquema relacional y datos semilla
+#2 CLOSED  CRUD de pesajes y reglas RN-01 a RN-04
+#1 CLOSED  Seguridad: login JWT, filtro y privilegios
+
+### tag
+74d9903 Merge develop en main: producto de la unidad 2
