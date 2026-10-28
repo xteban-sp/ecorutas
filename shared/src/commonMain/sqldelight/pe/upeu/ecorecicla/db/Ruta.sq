@@ -1,0 +1,53 @@
+-- Copia local de la ruta del dia. La interfaz lee SIEMPRE de aqui; la red solo
+-- mantiene estas tablas al dia (offline-first).
+CREATE TABLE ruta (
+    id     INTEGER NOT NULL PRIMARY KEY,
+    fecha  TEXT    NOT NULL,
+    estado TEXT    NOT NULL           -- ABIERTA | CERRADA
+);
+
+CREATE TABLE punto_acopio (
+    id                INTEGER NOT NULL PRIMARY KEY,
+    razon_social      TEXT    NOT NULL,
+    direccion         TEXT    NOT NULL,
+    zona              TEXT    NOT NULL,
+    material_habitual TEXT    NOT NULL,
+    secuencia         INTEGER NOT NULL,
+    -- Lo que dijo el servidor en la ultima bajada (pesado u omitido)
+    atendido          INTEGER NOT NULL DEFAULT 0
+);
+
+obtenerRuta:
+SELECT * FROM ruta LIMIT 1;
+
+insertarRuta:
+INSERT OR REPLACE INTO ruta (id, fecha, estado) VALUES (?, ?, ?);
+
+borrarRutas:
+DELETE FROM ruta;
+
+insertarPunto:
+INSERT OR REPLACE INTO punto_acopio (id, razon_social, direccion, zona, material_habitual, secuencia, atendido)
+VALUES (?, ?, ?, ?, ?, ?, ?);
+
+borrarPuntos:
+DELETE FROM punto_acopio;
+
+-- Un punto esta atendido si el servidor lo dijo o si hay un pesaje local vigente
+-- (incluido uno pendiente registrado sin red). La busqueda tambien se resuelve aqui.
+listarPuntos:
+SELECT p.id, p.razon_social, p.direccion, p.zona, p.material_habitual, p.secuencia,
+       CASE WHEN p.atendido = 1
+                 OR EXISTS (SELECT 1 FROM pesaje s WHERE s.punto_id = p.id AND s.anulado = 0)
+            THEN 1 ELSE 0 END AS atendido_local
+FROM punto_acopio p
+WHERE p.razon_social LIKE ('%' || :busqueda || '%')
+ORDER BY p.secuencia;
+
+obtenerPunto:
+SELECT p.id, p.razon_social, p.direccion, p.zona, p.material_habitual, p.secuencia,
+       CASE WHEN p.atendido = 1
+                 OR EXISTS (SELECT 1 FROM pesaje s WHERE s.punto_id = p.id AND s.anulado = 0)
+            THEN 1 ELSE 0 END AS atendido_local
+FROM punto_acopio p
+WHERE p.id = :id;

@@ -1,0 +1,60 @@
+-- Pesajes de la ruta. Un id NEGATIVO es provisional: la fila se registro sin red
+-- y el servicio (que solo emite ids positivos) todavia no le asigno el definitivo.
+CREATE TABLE pesaje (
+    id               INTEGER NOT NULL PRIMARY KEY,
+    ruta_id          INTEGER NOT NULL,
+    punto_id         INTEGER NOT NULL,
+    fecha_hora       TEXT    NOT NULL,
+    material         TEXT    NOT NULL,
+    peso_bruto       REAL    NOT NULL,
+    tara             REAL    NOT NULL,
+    peso_neto        REAL    NOT NULL,
+    observacion      TEXT    NOT NULL DEFAULT '',
+    operario         TEXT    NOT NULL,
+    anulado          INTEGER NOT NULL DEFAULT 0,
+    motivo_anulacion TEXT,
+    -- 1 = el servidor aun no conoce este cambio
+    pendiente        INTEGER NOT NULL DEFAULT 0,
+    -- Que hay que enviar mientras pendiente = 1: CREAR (POST) o EDITAR (PUT)
+    operacion        TEXT
+);
+
+CREATE INDEX pesaje_punto ON pesaje (punto_id);
+
+listarPorPunto:
+SELECT * FROM pesaje WHERE punto_id = ? ORDER BY pendiente DESC, fecha_hora DESC;
+
+-- Primero las creaciones en el orden en que se hicieron (-1, -2, ...), despues las correcciones.
+listarPendientes:
+SELECT * FROM pesaje
+WHERE pendiente = 1
+ORDER BY CASE WHEN id < 0 THEN 0 ELSE 1 END, id DESC;
+
+contarPendientes:
+SELECT COUNT(*) FROM pesaje WHERE pendiente = 1;
+
+obtenerPorId:
+SELECT * FROM pesaje WHERE id = ?;
+
+-- Siguiente id provisional: siempre negativo y menor que todos los existentes.
+-- COALESCE cubre la tabla vacia (MIN = NULL) y el MIN externo, una tabla solo con ids positivos.
+siguienteIdLocal:
+SELECT MIN(COALESCE(MIN(id), 0), 0) - 1 FROM pesaje;
+
+insertar:
+INSERT OR REPLACE INTO pesaje (id, ruta_id, punto_id, fecha_hora, material, peso_bruto, tara, peso_neto,
+                               observacion, operario, anulado, motivo_anulacion, pendiente, operacion)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+marcarAnulado:
+UPDATE pesaje SET anulado = 1, motivo_anulacion = ? WHERE id = ?;
+
+borrarPorId:
+DELETE FROM pesaje WHERE id = ?;
+
+-- La bajada reemplaza solo lo sincronizado: lo pendiente nunca se pierde.
+borrarSincronizados:
+DELETE FROM pesaje WHERE pendiente = 0;
+
+borrarTodo:
+DELETE FROM pesaje;
