@@ -1,0 +1,3 @@
+-- SC-C: migracion de la version 1 a la 2 de la base local. Quien ya tenia instalada la app
+-- conserva sus pesajes (incluidos los pendientes) y recibe la columna nueva vacia.
+ALTER TABLE pesaje ADD COLUMN humedad_estimada REAL;

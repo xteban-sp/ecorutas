@@ -162,7 +162,8 @@ class PesajeLocal(base: EcoDb) {
             anulado = if (anulado != null) 1 else 0,
             motivo_anulacion = anulado?.motivo,
             pendiente = if (p.pendiente) 1 else 0,
-            operacion = operacion
+            operacion = operacion,
+            humedad_estimada = p.humedadEstimada
         )
     }
 
@@ -178,6 +179,7 @@ class PesajeLocal(base: EcoDb) {
         estado = if (anulado == 1L) EstadoPesaje.Anulado(motivo_anulacion.orEmpty()) else EstadoPesaje.Registrado,
         pendiente = pendiente == 1L,
         rutaId = ruta_id,
-        observacion = observacion
+        observacion = observacion,
+        humedadEstimada = humedad_estimada
     )
 }

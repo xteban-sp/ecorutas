@@ -16,7 +16,9 @@ CREATE TABLE pesaje (
     -- 1 = el servidor aun no conoce este cambio
     pendiente        INTEGER NOT NULL DEFAULT 0,
     -- Que hay que enviar mientras pendiente = 1: CREAR (POST) o EDITAR (PUT)
-    operacion        TEXT
+    operacion        TEXT,
+    -- SC-C: humedad estimada en % (opcional). Agregada en la migracion 1.sqm
+    humedad_estimada REAL
 );
 
 CREATE INDEX pesaje_punto ON pesaje (punto_id);
@@ -43,8 +45,9 @@ SELECT MIN(COALESCE(MIN(id), 0), 0) - 1 FROM pesaje;
 
 insertar:
 INSERT OR REPLACE INTO pesaje (id, ruta_id, punto_id, fecha_hora, material, peso_bruto, tara, peso_neto,
-                               observacion, operario, anulado, motivo_anulacion, pendiente, operacion)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+                               observacion, operario, anulado, motivo_anulacion, pendiente, operacion,
+                               humedad_estimada)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 marcarAnulado:
 UPDATE pesaje SET anulado = 1, motivo_anulacion = ? WHERE id = ?;
