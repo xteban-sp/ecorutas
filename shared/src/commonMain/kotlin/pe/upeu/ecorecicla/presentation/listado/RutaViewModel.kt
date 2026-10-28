@@ -22,6 +22,7 @@ import pe.upeu.ecorecicla.domain.model.Sesion
 import pe.upeu.ecorecicla.domain.model.comoErrorApi
 import pe.upeu.ecorecicla.domain.repository.MonitorConexion
 import pe.upeu.ecorecicla.domain.usecase.CerrarRutaUseCase
+import pe.upeu.ecorecicla.domain.usecase.ObservarPendientesUseCase
 import pe.upeu.ecorecicla.domain.usecase.ObservarPuntosUseCase
 import pe.upeu.ecorecicla.domain.usecase.ObservarRutaUseCase
 import pe.upeu.ecorecicla.domain.usecase.ObservarUltimaSincronizacionUseCase
@@ -38,6 +39,8 @@ data class RutaUiState(
     /** SC-A: mostrar solo los puntos pendientes de pesar. */
     val soloPendientes: Boolean = false,
     val ultimaSincronizacion: Long? = null,
+    /** SC-D: pesajes pendientes de sincronizar, leidos de una consulta observable de la base local. */
+    val pendientesPorSincronizar: Long = 0,
     val sincronizando: Boolean = false,
     val cerrando: Boolean = false,
     val confirmarCierre: Boolean = false,
@@ -60,6 +63,7 @@ class RutaViewModel(
     observarRuta: ObservarRutaUseCase,
     observarPuntos: ObservarPuntosUseCase,
     observarUltimaSincronizacion: ObservarUltimaSincronizacionUseCase,
+    observarPendientes: ObservarPendientesUseCase,
     private val sincronizarUseCase: SincronizarUseCase,
     private val cerrarRutaUseCase: CerrarRutaUseCase,
     monitor: MonitorConexion
@@ -78,6 +82,11 @@ class RutaViewModel(
             combine(busqueda, soloPendientes) { texto, pendientes -> texto to pendientes }
                 .flatMapLatest { (texto, pendientes) -> observarPuntos(texto, pendientes) }
                 .collect { puntos -> _estado.update { it.copy(puntos = puntos, cargando = false) } }
+        }
+        // SC-D: no hay contador a mano. La consulta COUNT(*) de SQLDelight vuelve a emitir
+        // cuando cambia la tabla pesaje, es decir, al registrar sin red o al sincronizar.
+        viewModelScope.launch {
+            observarPendientes().collect { n -> _estado.update { it.copy(pendientesPorSincronizar = n) } }
         }
         viewModelScope.launch {
             observarUltimaSincronizacion().collect { ms -> _estado.update { it.copy(ultimaSincronizacion = ms) } }

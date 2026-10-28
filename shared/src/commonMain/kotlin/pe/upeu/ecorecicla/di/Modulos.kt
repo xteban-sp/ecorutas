@@ -85,7 +85,7 @@ val domainModule = module {
 
 val presentationModule = module {
     viewModel { SesionViewModel(get(), get(), get()) }
-    viewModel { (sesion: Sesion) -> RutaViewModel(sesion, get(), get(), get(), get(), get(), get()) }
+    viewModel { (sesion: Sesion) -> RutaViewModel(sesion, get(), get(), get(), get(), get(), get(), get()) }
     viewModel { (puntoId: Long, sesion: Sesion) ->
         DetalleViewModel(puntoId, sesion, get(), get(), get(), get(), get(), get())
     }
