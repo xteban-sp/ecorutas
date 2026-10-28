@@ -17,8 +17,10 @@ class MonitorConexionAndroid(contexto: Context) : MonitorConexion {
 
     override val conectado: Flow<Boolean> = callbackFlow {
         val callback = object : ConnectivityManager.NetworkCallback() {
-            override fun onAvailable(network: Network) {
-                trySend(true)
+            // onAvailable llega antes de que la red tenga salida real: se espera a VALIDATED,
+            // si no la sincronizacion automatica falla con "sin conexion" y no se repite.
+            override fun onCapabilitiesChanged(network: Network, capacidades: NetworkCapabilities) {
+                trySend(capacidades.tieneInternet())
             }
 
             override fun onLost(network: Network) {
@@ -31,6 +33,9 @@ class MonitorConexionAndroid(contexto: Context) : MonitorConexion {
     }.distinctUntilChanged()
 
     private fun hayRed(): Boolean =
-        gestor.getNetworkCapabilities(gestor.activeNetwork)
-            ?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
+        gestor.getNetworkCapabilities(gestor.activeNetwork)?.tieneInternet() == true
+
+    private fun NetworkCapabilities.tieneInternet(): Boolean =
+        hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+            hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
 }
