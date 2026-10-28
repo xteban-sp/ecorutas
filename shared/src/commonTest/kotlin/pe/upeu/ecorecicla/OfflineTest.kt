@@ -93,4 +93,28 @@ class OfflineTest {
         assertEquals(listOf(16L), enBase.map { it.id }, "La fila provisional -1 se sustituyo por la definitiva 16, sin duplicado")
         assertEquals(0, e.pesajeLocal.observarCantidadPendientes().first())
     }
+
+    /** SC-D: el distintivo lee una consulta observable; sube al registrar sin red y vuelve a 0 al sincronizar. */
+    @Test
+    fun distintivoDePendientesSeActualizaAlRegistrarYAlSincronizar() = runTest {
+        var hayRed = false
+        val e = Escenario { peticion ->
+            if (!hayRed) throw IOException("modo avion")
+            when {
+                peticion.method == HttpMethod.Post -> json(pesajeJson(id = 30), HttpStatusCode.Created)
+                peticion.url.encodedPath.endsWith("rutas/del-dia") -> json(RUTA_JSON)
+                else -> json("""{"contenido":[${pesajeJson(30)}],"pagina":0,"tamanio":200,"totalElementos":1,"totalPaginas":1,"ultima":true}""")
+            }
+        }
+        e.conRutaDescargada()
+        val contador = e.pesajes.observarCantidadPendientes()
+        assertEquals(0, contador.first())
+
+        RegistrarPesajeUseCase(e.pesajes)(datos).getOrThrow()
+        assertEquals(1, contador.first(), "Sube al registrar sin conexion")
+
+        hayRed = true
+        SincronizarUseCase(e.pesajes, e.rutas)().getOrThrow()
+        assertEquals(0, contador.first(), "Vuelve a 0 al sincronizar")
+    }
 }
