@@ -1,0 +1,36 @@
+### ecoapi · sc-b-istana (4 commits)
+df562d2 2026-10-28 15:50 feat(seguridad): agregar el rol AUDITOR con privilegios de solo lectura
+2af45fb 2026-10-28 15:50 feat(datos): crear el usuario de prueba auditor1
+2de9b76 2026-10-28 15:51 docs(seguridad): documentar el rol AUDITOR y sus pruebas en la coleccion
+add24e8 2026-10-28 15:51 docs(seguridad): agregar la columna AUDITOR a la matriz de privilegios
+
+### ecoapi · sc-c-istana (4 commits)
+4ddd86f 2026-10-28 15:52 feat(datos): agregar la columna humedad estimada al pesaje
+219ea55 2026-10-28 15:52 feat(pesajes): recibir y devolver la humedad estimada validada entre 0 y 100
+637810f 2026-10-28 15:53 feat(pesajes): completar la humedad estimada en peticiones, respuesta y servicio
+718569f 2026-10-28 15:53 feat(datos): actualizar la semilla con humedad y documentar el contrato
+
+### ecoapi · docs/parte-ii (1 commits)
+493f3ed 2026-10-28 16:02 docs: describir las solicitudes de cambio de la Parte II en el servicio
+
+### ecorutas · sc-a-istana (4 commits)
+9466ac4 2026-10-28 15:54 feat(local): filtrar los puntos pendientes de pesar en la consulta SQL
+222c1a8 2026-10-28 15:54 feat(ruta): combinar el filtro de pendientes con el buscador en el caso de uso
+5437ea7 2026-10-28 15:55 feat(ruta): agregar el chip Solo pendientes de pesar y su prueba
+de8b8fc 2026-10-28 15:55 fix(local): reescribir el filtro de pendientes con NOT EXISTS que acepta SQLDelight
+
+### ecorutas · sc-d-istana (3 commits)
+4c934e7 2026-10-28 15:56 feat(ruta): observar la cantidad de pesajes pendientes desde la base local
+84973f4 2026-10-28 15:57 feat(ruta): mostrar el distintivo de pendientes sobre el boton de sincronizar
+9d52c14 2026-10-28 15:57 test(sincronizacion): verificar que el distintivo sube al registrar y baja al sincronizar
+
+### ecorutas · sc-c-istana (4 commits)
+bd30e75 2026-10-28 15:58 feat(pesajes): agregar la humedad estimada al dominio, los DTO y su conversion
+d84faf1 2026-10-28 15:58 feat(local): guardar la humedad en la base local con migracion de version
+665b99c 2026-10-28 15:58 feat(ui): pedir y mostrar la humedad estimada en el formulario y en el detalle
+72b0753 2026-10-28 15:59 test(pesajes): cubrir la humedad estimada en la conversion y la validacion
+
+### ecorutas · sc-b-istana (2 commits)
+fbaf20d 2026-10-28 16:01 docs(seguridad): explicar por que el rol AUDITOR no requiere cambios en la app
+8bc4368 2026-10-28 16:01 docs: describir las solicitudes de cambio de la Parte II y sus pruebas
+

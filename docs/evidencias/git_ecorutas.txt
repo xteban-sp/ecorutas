@@ -1,0 +1,128 @@
+### ecorutas — git log --graph --oneline --all
+*   e910ade (HEAD -> main, origin/main) Merge develop en main: Release: producto con la Parte II
+|\  
+| *   78a1fcf (origin/develop, develop) Merge sc-b-istana en develop: SC-B: rol AUDITOR y documentación de la Parte II
+| |\  
+| | * 8bc4368 (origin/sc-b-istana, sc-b-istana) docs: describir las solicitudes de cambio de la Parte II y sus pruebas
+| | * fbaf20d docs(seguridad): explicar por que el rol AUDITOR no requiere cambios en la app
+| * | d91bf28 Merge sc-c-istana en develop: SC-C: humedad estimada de punta a punta
+| |\| 
+| | * 72b0753 (origin/sc-c-istana, sc-c-istana) test(pesajes): cubrir la humedad estimada en la conversion y la validacion
+| | * 665b99c feat(ui): pedir y mostrar la humedad estimada en el formulario y en el detalle
+| | * d84faf1 feat(local): guardar la humedad en la base local con migracion de version
+| | * bd30e75 feat(pesajes): agregar la humedad estimada al dominio, los DTO y su conversion
+| * | 35d0555 Merge sc-d-istana en develop: SC-D: distintivo de pesajes pendientes
+| |\| 
+| | * 9d52c14 (origin/sc-d-istana, sc-d-istana) test(sincronizacion): verificar que el distintivo sube al registrar y baja al sincronizar
+| | * 84973f4 feat(ruta): mostrar el distintivo de pendientes sobre el boton de sincronizar
+| | * 4c934e7 feat(ruta): observar la cantidad de pesajes pendientes desde la base local
+| * | 0621479 Merge sc-a-istana en develop: SC-A: filtro Solo pendientes de pesar
+| |\| 
+| | * de8b8fc (origin/sc-a-istana, sc-a-istana) fix(local): reescribir el filtro de pendientes con NOT EXISTS que acepta SQLDelight
+| | * 5437ea7 feat(ruta): agregar el chip Solo pendientes de pesar y su prueba
+| | * 222c1a8 feat(ruta): combinar el filtro de pendientes con el buscador en el caso de uso
+| | * 9466ac4 feat(local): filtrar los puntos pendientes de pesar en la consulta SQL
+| |/  
+* | 6918546 (tag: v1.0-unidad2) Merge develop en main: correccion de la sincronizacion automatica
+|\| 
+| *   5793cb0 Merge fix/sincronizacion-red-validada en develop: la sincronizacion automatica ya no falla al volver la senal
+| |\  
+| | * 297801a (origin/fix/sincronizacion-red-validada, fix/sincronizacion-red-validada) fix(sincronizacion): esperar red validada antes de sincronizar al reconectar
+| |/  
+* | fc13ac8 Merge develop en main: producto de la unidad 2
+|\| 
+| *   5a87049 Merge docs/readme en develop: README
+| |\  
+| | * 6288609 (origin/docs/readme, docs/readme) docs: describir arquitectura, contrato consumido y ejecucion
+| |/  
+| *   b31ccc5 Merge feature/pruebas en develop: pruebas de commonTest
+| |\  
+| | * 7c05270 (origin/feature/pruebas, feature/pruebas) test: conversion de DTO, mapeo de errores, registro sin red y orden de sincronizacion
+| |/  
+| *   5369137 Merge feature/interfaz en develop: interfaz segun privilegios
+| |\  
+| | * c73ea6f (origin/feature/interfaz, feature/interfaz) feat(di): registrar modulos de Koin y arrancar la app Android
+| | * e6c1f97 feat(ui): pantallas de inicio de sesion, ruta del dia, detalle y perfil
+| |/  
+| *   edfed3e Merge feature/offline-first en develop: persistencia local y sincronizacion
+| |\  
+| | * 6bc5f84 (origin/feature/offline-first, feature/offline-first) feat(sincronizacion): repositorios offline-first que suben antes de bajar
+| | * ad670ea feat(local): derivar el esquema SQLDelight con marca de pendiente e id provisional
+| |/  
+| *   7c8db32 Merge feature/seguridad-jwt en develop: autenticacion JWT y almacen seguro
+| |\  
+| | * 096218a (origin/feature/seguridad-jwt, feature/seguridad-jwt) feat(sesion): guardar el token cifrado y recuperar la sesion al reabrir
+| | * 159f824 feat(red): traducir cada respuesta HTTP a ErrorApi en un solo lugar
+| | * 1c66656 feat(red): crear el cliente Ktor unico con cabecera de token centralizada
+| |/  
+| * 73f8305 Merge feature/estructura-kmp en develop: estructura y dominio
+|/| 
+| * 630ef3e (origin/feature/estructura-kmp, feature/estructura-kmp) feat(dominio): declarar contratos de repositorio y casos de uso
+| * 0ce22f9 feat(dominio): implementar el modelo entregado y los errores tipados
+| * c0d66ef build: configurar proyecto KMP con Compose, Ktor, Koin y SQLDelight
+|/  
+* 3fe8003 chore: iniciar repositorio de EcoRutas
+
+### git log --date=short --pretty="%h %ad %s"
+e910ade 2026-10-28 Merge develop en main: Release: producto con la Parte II
+78a1fcf 2026-10-28 Merge sc-b-istana en develop: SC-B: rol AUDITOR y documentación de la Parte II
+d91bf28 2026-10-28 Merge sc-c-istana en develop: SC-C: humedad estimada de punta a punta
+35d0555 2026-10-28 Merge sc-d-istana en develop: SC-D: distintivo de pesajes pendientes
+0621479 2026-10-28 Merge sc-a-istana en develop: SC-A: filtro Solo pendientes de pesar
+8bc4368 2026-10-28 docs: describir las solicitudes de cambio de la Parte II y sus pruebas
+fbaf20d 2026-10-28 docs(seguridad): explicar por que el rol AUDITOR no requiere cambios en la app
+72b0753 2026-10-28 test(pesajes): cubrir la humedad estimada en la conversion y la validacion
+665b99c 2026-10-28 feat(ui): pedir y mostrar la humedad estimada en el formulario y en el detalle
+d84faf1 2026-10-28 feat(local): guardar la humedad en la base local con migracion de version
+bd30e75 2026-10-28 feat(pesajes): agregar la humedad estimada al dominio, los DTO y su conversion
+9d52c14 2026-10-28 test(sincronizacion): verificar que el distintivo sube al registrar y baja al sincronizar
+84973f4 2026-10-28 feat(ruta): mostrar el distintivo de pendientes sobre el boton de sincronizar
+4c934e7 2026-10-28 feat(ruta): observar la cantidad de pesajes pendientes desde la base local
+de8b8fc 2026-10-28 fix(local): reescribir el filtro de pendientes con NOT EXISTS que acepta SQLDelight
+5437ea7 2026-10-28 feat(ruta): agregar el chip Solo pendientes de pesar y su prueba
+222c1a8 2026-10-28 feat(ruta): combinar el filtro de pendientes con el buscador en el caso de uso
+9466ac4 2026-10-28 feat(local): filtrar los puntos pendientes de pesar en la consulta SQL
+6918546 2026-10-28 Merge develop en main: correccion de la sincronizacion automatica
+5793cb0 2026-10-28 Merge fix/sincronizacion-red-validada en develop: la sincronizacion automatica ya no falla al volver la senal
+297801a 2026-10-28 fix(sincronizacion): esperar red validada antes de sincronizar al reconectar
+fc13ac8 2026-10-28 Merge develop en main: producto de la unidad 2
+5a87049 2026-10-28 Merge docs/readme en develop: README
+b31ccc5 2026-10-28 Merge feature/pruebas en develop: pruebas de commonTest
+6288609 2026-10-28 docs: describir arquitectura, contrato consumido y ejecucion
+5369137 2026-10-28 Merge feature/interfaz en develop: interfaz segun privilegios
+7c05270 2026-10-28 test: conversion de DTO, mapeo de errores, registro sin red y orden de sincronizacion
+edfed3e 2026-10-28 Merge feature/offline-first en develop: persistencia local y sincronizacion
+c73ea6f 2026-10-28 feat(di): registrar modulos de Koin y arrancar la app Android
+6bc5f84 2026-10-28 feat(sincronizacion): repositorios offline-first que suben antes de bajar
+e6c1f97 2026-10-28 feat(ui): pantallas de inicio de sesion, ruta del dia, detalle y perfil
+ad670ea 2026-10-28 feat(local): derivar el esquema SQLDelight con marca de pendiente e id provisional
+7c8db32 2026-10-28 Merge feature/seguridad-jwt en develop: autenticacion JWT y almacen seguro
+73f8305 2026-10-28 Merge feature/estructura-kmp en develop: estructura y dominio
+096218a 2026-10-28 feat(sesion): guardar el token cifrado y recuperar la sesion al reabrir
+630ef3e 2026-10-28 feat(dominio): declarar contratos de repositorio y casos de uso
+159f824 2026-10-28 feat(red): traducir cada respuesta HTTP a ErrorApi en un solo lugar
+0ce22f9 2026-10-28 feat(dominio): implementar el modelo entregado y los errores tipados
+1c66656 2026-10-28 feat(red): crear el cliente Ktor unico con cabecera de token centralizada
+c0d66ef 2026-10-28 build: configurar proyecto KMP con Compose, Ktor, Koin y SQLDelight
+3fe8003 2026-10-28 chore: iniciar repositorio de EcoRutas
+
+### Solicitudes de incorporacion (PR) cerradas en GitHub
+#14  develop -> main  2026-10-28T21:12  Release: producto con la Parte II
+#13  sc-b-istana -> develop  2026-10-28T21:12  SC-B: rol AUDITOR y documentación de la Parte II
+#12  sc-c-istana -> develop  2026-10-28T21:12  SC-C: humedad estimada de punta a punta
+#11  sc-d-istana -> develop  2026-10-28T21:12  SC-D: distintivo de pesajes pendientes
+#10  sc-a-istana -> develop  2026-10-28T21:12  SC-A: filtro Solo pendientes de pesar
+
+### Issues
+#9 CLOSED  SC-B: rol AUDITOR en la app
+#8 CLOSED  SC-C: humedad estimada en la app
+#7 CLOSED  SC-D: distintivo de pesajes pendientes
+#6 CLOSED  SC-A: filtro Solo pendientes de pesar
+#5 CLOSED  Pruebas de commonTest
+#4 CLOSED  Sincronizacion offline-first
+#3 CLOSED  Persistencia local con SQLDelight
+#2 CLOSED  CRUD de pesajes e interfaz segun privilegios
+#1 CLOSED  Seguridad: sesion JWT y almacen seguro
+
+### tag
+6918546 Merge develop en main: correccion de la sincronizacion automatica
