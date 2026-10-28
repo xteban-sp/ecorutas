@@ -1,0 +1,80 @@
+### Login con credenciales incorrectas (401)
+$ POST /auth/login operario1 / clave mala
+{"timestamp":"2026-10-28T15:31:20","status":401,"error":"Unauthorized","message":"Usuario o contrasena incorrectos","path":"/api/v1/auth/login"}
+-> HTTP 401
+
+### Login correcto (200): token firmado + privilegios
+$ POST /auth/login operario1
+{"token":"eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJvcGVyYXJpbzEiLCJ1aWQiOjEsIm5vbWJyZSI6Ikx1aXMgUXVpc3BlIE1hbWFuaSIsInJvbCI6Ik9QRVJBUklPIiwicHJpdmlsZWdpb3MiOlsiUEVTQUpFX0NSRUFSIiwiUEVTQUpFX0VESVRBUiIsIlBFU0FKRV9MRUVSIiwiUFVOVE9fTEVFUiJdLCJpYXQiOjE3OTMyMTk0ODAsImV4cCI6MTc5MzIyMzA4MH0.2AWODah-S24ddADe3RYsNHpGCHkb4BrpQsPAIERSX7fCW74-WY6LoO-YIyzD3ez_","tipo":"Bearer","expiraEnSegundos":3600,"username":"operario1","nombreCompleto":"Luis Quispe Mamani","rol":"OPERARIO","privilegios":["PESAJE_CREAR","PESAJE_EDITAR","PESAJE_LEER","PUNTO_LEER"]}
+-> HTTP 200
+
+### Sin token (401)
+$ GET /rutas/del-dia sin Authorization
+{"timestamp":"2026-10-28T15:31:20","status":401,"error":"Unauthorized","message":"Debe iniciar sesion para acceder a este recurso","path":"/api/v1/rutas/del-dia"}
+-> HTTP 401
+
+### Token con la firma alterada (401)
+$ GET /rutas/del-dia con un caracter de la firma cambiado
+{"timestamp":"2026-10-28T15:31:20","status":401,"error":"Unauthorized","message":"El token no es valido","path":"/api/v1/rutas/del-dia"}
+-> HTTP 401
+
+### Administrador sin PESAJE_CREAR registra (403, token valido)
+$ POST /pesajes con token de admin
+{"timestamp":"2026-10-28T15:31:20","status":403,"error":"Forbidden","message":"No tiene el privilegio necesario para realizar esta operacion","path":"/api/v1/pesajes"}
+-> HTTP 403
+
+### Operario intenta anular sin PESAJE_ANULAR (403)
+$ DELETE /pesajes/10 con token de operario
+{"timestamp":"2026-10-28T15:31:20","status":403,"error":"Forbidden","message":"No tiene el privilegio necesario para realizar esta operacion","path":"/api/v1/pesajes/10"}
+-> HTTP 403
+
+### Operario cierra la ruta sin RUTA_CERRAR (403)
+$ POST /rutas/2/cierre con token de operario
+{"timestamp":"2026-10-28T15:31:20","status":403,"error":"Forbidden","message":"No tiene el privilegio necesario para realizar esta operacion","path":"/api/v1/rutas/2/cierre"}
+-> HTTP 403
+
+### Validacion por campo (400)
+$ POST /pesajes sin material, bruto negativo, sin tara
+{"timestamp":"2026-10-28T15:31:21","status":400,"error":"Bad Request","message":"Datos invalidos","path":"/api/v1/pesajes","validationErrors":{"pesoBruto":"El peso bruto debe ser mayor que cero","material":"El tipo de material es obligatorio","tara":"La tara es obligatoria"}}
+-> HTTP 400
+
+### RN-03 neto <= 0 (400 en el campo tara)
+$ POST /pesajes bruto 10, tara 12
+{"timestamp":"2026-10-28T15:31:21","status":400,"error":"Bad Request","message":"Datos invalidos","path":"/api/v1/pesajes","validationErrors":{"tara":"La tara debe ser menor que el peso bruto: el peso neto debe ser mayor que cero"}}
+-> HTTP 400
+
+### RN-01 ruta cerrada (409)
+$ POST /pesajes en la ruta de ayer
+{"timestamp":"2026-10-28T15:31:21","status":409,"error":"Conflict","message":"La ruta del 2026-10-27 ya esta cerrada: no admite registrar ni corregir pesajes","path":"/api/v1/pesajes"}
+-> HTTP 409
+
+### RN-02 corregir pesaje de otro operario (403)
+$ PUT /pesajes/15 (de operario2) con token de operario1
+{"timestamp":"2026-10-28T15:31:21","status":403,"error":"Forbidden","message":"Solo puede corregir los pesajes que usted registro","path":"/api/v1/pesajes/15"}
+-> HTTP 403
+
+### RN-04 cerrar con puntos faltantes (409)
+$ POST /rutas/2/cierre con token de supervisor
+{"timestamp":"2026-10-28T15:31:21","status":409,"error":"Conflict","message":"No se puede cerrar la ruta: faltan 1 punto(s) sin pesaje registrado ni motivo de omision","path":"/api/v1/rutas/2/cierre"}
+-> HTTP 409
+
+### Supervisor anula (204, anulacion logica)
+$ DELETE /pesajes/13?motivo=Demo
+
+-> HTTP 204
+
+### Recurso inexistente (404)
+$ GET /pesajes/999
+{"timestamp":"2026-10-28T15:31:21","status":404,"error":"Not Found","message":"El pesaje 999 no existe","path":"/api/v1/pesajes/999"}
+-> HTTP 404
+
+### Listado paginado con filtro por zona (200)
+$ GET /puntos?zona=SUR&pagina=0&tamanio=2
+{"contenido":[{"id":12,"razonSocial":"Centro Comercial Plaza Sur","direccion":"Av. Floral 1750","zona":"SUR","materialHabitual":"CARTON"},{"id":9,"razonSocial":"Clinica San Martin SAC","direccion":"Av. El Sol 980","zona":"SUR","materialHabitual":"PLASTICO"}],"pagina":0,"tamanio":2,"totalElementos":4,"totalPaginas":2,"ultima":false}
+-> HTTP 200
+
+### Pesajes sincronizados desde la app (ids 16 y 17)
+$ GET /rutas/2/pesajes?tamanio=3
+{"contenido":[{"id":17,"rutaId":2,"puntoId":5,"fechaHora":"2026-10-28T15:30:08","material":"VIDRIO","pesoBruto":55.5,"tara":4.0,"pesoNeto":51.5,"observacion":"","operario":"operario1","anulado":false,"motivoAnulacion":null},{"id":16,"rutaId":2,"puntoId":4,"fechaHora":"2026-10-28T15:29:39","material":"CARTON","pesoBruto":10.0,"tara":2.0,"pesoNeto":8.0,"observacion":"","operario":"operario1","anulado":false,"motivoAnulacion":null},{"id":15,"rutaId":2,"puntoId":3,"fechaHora":"2026-10-28T08:20","material":"PAPEL","pesoBruto":40.0,"tara":3.0,"pesoNeto":37.0,"observacion":"Registrado por apoyo","operario":"operario2","anulado":false,"motivoAnulacion":null}],"pagina":0,"tamanio":3,"totalElementos":8,"totalPaginas":3,"ultima":false}
+-> HTTP 200
+

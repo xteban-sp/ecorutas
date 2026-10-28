@@ -1,0 +1,15 @@
+SC-B: rol AUDITOR (solo lectura) - verificacion contra el servicio
+Login auditor1 -> privilegios: "rol":"AUDITOR","privilegios":["PESAJE_LEER","PUNTO_LEER"]
+GET  /puntos               (PUNTO_LEER)      -> 200
+GET  /puntos/1/pesajes     (PESAJE_LEER)     -> 200
+POST /pesajes              (PESAJE_CREAR)    -> 403
+PUT  /pesajes/10           (PESAJE_EDITAR)   -> 403
+DELETE /pesajes/10         (PESAJE_ANULAR)   -> 403
+POST /rutas/2/cierre       (RUTA_CERRAR)     -> 403
+POST /puntos               (PUNTO_GESTIONAR) -> 403
+
+Archivos modificados en el backend:
+ EcoAPI.postman_collection.json                     | 90 ++++++++++++++++++++++
+ README.md                                          | 23 +++---
+ .../resources/db/migration/V3__rol_auditor.sql     | 14 ++++
+ 3 files changed, 116 insertions(+), 11 deletions(-)

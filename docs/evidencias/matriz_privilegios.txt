@@ -1,0 +1,6 @@
+Matriz de privilegios verificada contra el servicio (codigo HTTP real por rol)
+Fecha: 2026-10-28 15:37
+
+OPERARIO|200|200|201|200|403|403|403|403
+SUPERVISOR|200|200|201|200|200|204|409|403
+ADMINISTRADOR|200|200|403|403|403|403|403|201
