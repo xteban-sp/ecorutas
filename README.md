@@ -61,6 +61,10 @@ Los listados se deserializan como `PaginaDto<T>` (envoltorio común), y los erro
 
 La sesión trae los privilegios del token (`Sesion.puede(...)`). La interfaz solo **ofrece** lo permitido: "Registrar pesaje" (PESAJE_CREAR), "Corregir" (PESAJE_EDITAR, y si no tiene PESAJE_EDITAR_TODOS solo en pesajes propios), "Anular" (PESAJE_ANULAR), "Cerrar ruta" (RUTA_CERRAR). Esto es experiencia de usuario: la seguridad la aplica el servicio, que responde 403 aunque se intente igual.
 
+## SC-B: rol AUDITOR en la aplicación
+
+El rol AUDITOR (solo PUNTO_LEER y PESAJE_LEER) se agregó en el servicio con la migración `V3__rol_auditor.sql` del repositorio `ecoapi`. **La aplicación no necesitó cambios de código**: ninguna pantalla pregunta por el nombre del rol, todas consultan `Sesion.puede(privilegio)` con los privilegios del token. Un auditor que inicia sesión ve el perfil con sus 2 privilegios y no recibe ninguna acción de escritura (Registrar, Corregir, Anular, Cerrar ruta); si las intentara, el servicio responde 403.
+
 ## Decisiones de arquitectura
 
 - **Capas**: domain (modelo, contratos, casos de uso, sin anotaciones de serialización), data (Ktor, DTO, SQLDelight, repositorios), presentation (ViewModel + `StateFlow<UiState>` + Compose). Inyección con Koin.
