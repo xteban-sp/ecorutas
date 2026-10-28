@@ -4,7 +4,7 @@ Aplicación del Examen Parcial U2 (Versión B, caso EcoRecicla). Kotlin Multipla
 
 ## Ejecución
 
-1. Levantar el backend: en `ecoapi`, `./gradlew bootRun`.
+1. Levantar el backend: en `ecoapi`, `./gradlew bootRun` (requiere Docker Desktop: levanta PostgreSQL 16 automáticamente).
 2. Instalar la app en el emulador:
    ```bash
    ./gradlew :androidApp:installDebug
