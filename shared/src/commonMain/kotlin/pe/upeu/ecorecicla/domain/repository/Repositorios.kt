@@ -30,7 +30,8 @@ interface AuthRepository {
 
 interface RutaRepository {
     fun observarRuta(): Flow<Ruta?>
-    fun observarPuntos(busqueda: String): Flow<List<PuntoAcopio>>
+    /** SC-A: [soloPendientes] deja solo los puntos sin pesar; se combina con la busqueda. */
+    fun observarPuntos(busqueda: String, soloPendientes: Boolean = false): Flow<List<PuntoAcopio>>
     fun observarPunto(id: Long): Flow<PuntoAcopio?>
     fun observarUltimaSincronizacion(): Flow<Long?>
 
